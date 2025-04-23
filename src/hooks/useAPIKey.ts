@@ -14,7 +14,6 @@ export function useAPIKey(): UseApiKeyReturn {
   const [isKeySet, setIsKeySet] = useState<boolean>(false);
 
   useEffect(() => {
-    // Load API key from localStorage on mount
     const savedKey = localStorage.getItem(API_KEY_STORAGE_KEY);
     if (savedKey) {
       setApiKeyState(savedKey);
