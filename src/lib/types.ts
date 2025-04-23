@@ -39,3 +39,8 @@ export interface CodeBlock {
   indentation: number;
   lineNumber: number;
 }
+
+export interface PuzzleData {
+  blocks: CodeBlock[];
+  solution: CodeBlock[];
+}
