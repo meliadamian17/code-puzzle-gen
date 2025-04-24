@@ -4,18 +4,18 @@ import { stubbedResponse } from "@/lib/stub";
 
 export async function POST(request: NextRequest) {
   try {
-    //const { prompt, apiKey } = await request.json();
-    //
-    //if (!prompt || !apiKey) {
-    //  return NextResponse.json(
-    //    { error: "BAD REQUEST: Prompt and API key are required" },
-    //    { status: 400 },
-    //  );
-    //}
-    //
-    //const puzzle = await generateCodePuzzle(prompt, apiKey);
+    const { prompt, apiKey } = await request.json();
 
-    const puzzle = stubbedResponse;
+    if (!prompt || !apiKey) {
+      return NextResponse.json(
+        { error: "BAD REQUEST: Prompt and API key are required" },
+        { status: 400 },
+      );
+    }
+
+    const puzzle = await generateCodePuzzle(prompt, apiKey);
+
+    //const puzzle = stubbedResponse;
 
     return NextResponse.json(puzzle);
   } catch (error) {

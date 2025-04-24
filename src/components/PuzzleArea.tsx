@@ -179,6 +179,11 @@ export function PuzzleArea({ initialBlocks, solution }: PuzzleAreaProps) {
     setShowHint(null);
     setIncorrectBlocks([]);
 
+    if (solutionBlocks.length === 0) {
+      alert("There's nothing to check - try moving some blocks to the solution area first!");
+      return;
+    }
+
     // solution validation 
     const wrongBlocks = solutionBlocks.filter(block => {
       const possibleSolutions = processedSolution.get(block.code) || [];
@@ -237,6 +242,11 @@ export function PuzzleArea({ initialBlocks, solution }: PuzzleAreaProps) {
     setShowHint(null);
     setIncorrectBlocks([]);
 
+    if (solutionBlocks.length === 0) {
+      alert("There's nothing to hint at - try moving some blocks to the solution area first!");
+      return;
+    }
+
     // check if current solution is already correct (either complete or partial)
     const isSolutionCorrect = solutionBlocks.every(block => {
       const possibleSolutions = processedSolution.get(block.code) || [];
@@ -285,10 +295,18 @@ export function PuzzleArea({ initialBlocks, solution }: PuzzleAreaProps) {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.ctrlKey && e.key === 'z') {
         e.preventDefault();
-        if (canUndo) undo();
+        if (canUndo) {
+          undo();
+          setShowHint(null);
+          setIncorrectBlocks([]);
+        }
       } else if (e.ctrlKey && e.key === 'y') {
         e.preventDefault();
-        if (canRedo) redo();
+        if (canRedo) {
+          redo();
+          setShowHint(null);
+          setIncorrectBlocks([]);
+        }
       }
     };
 
@@ -317,14 +335,22 @@ export function PuzzleArea({ initialBlocks, solution }: PuzzleAreaProps) {
           {hintDisabled ? 'Hint (10s)' : 'Get Hint'}
         </button>
         <button
-          onClick={undo}
+          onClick={() => {
+            undo();
+            setShowHint(null);
+            setIncorrectBlocks([]);
+          }}
           disabled={!canUndo}
           className="px-6 py-2 bg-[#2A2D2E] text-[#D4D4D4] font-bold rounded-lg hover:bg-[#3A3D41] disabled:opacity-50 cursor-pointer"
         >
           Undo (Ctrl+Z)
         </button>
         <button
-          onClick={redo}
+          onClick={() => {
+            redo();
+            setShowHint(null);
+            setIncorrectBlocks([]);
+          }}
           disabled={!canRedo}
           className="px-6 py-2 bg-[#2A2D2E] text-[#D4D4D4] font-bold rounded-lg hover:bg-[#3A3D41] disabled:opacity-50 cursor-pointer"
         >
