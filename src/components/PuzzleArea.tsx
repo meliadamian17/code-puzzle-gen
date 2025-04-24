@@ -180,29 +180,22 @@ export function PuzzleArea({ initialBlocks, solution }: PuzzleAreaProps) {
     setIncorrectBlocks([]);
 
     // solution validation 
-
-    // first check if all blocks are in the solution area
-    if (solutionBlocks.length !== solution.length) {
-      setIncorrectBlocks(solutionBlocks.map(block => block.id));
-      return;
-    }
-
-    // check each block against possible positions for identical blocks
     const wrongBlocks = solutionBlocks.filter(block => {
       const possibleSolutions = processedSolution.get(block.code) || [];
-      // block is correct if it matches any of the possible positions for its code
-      return !possibleSolutions.some(({ position, block: solutionBlock }) => {
-        const currentPos = solutionBlocks.findIndex(b => b.id === block.id);
-        const possiblePositions = solution.reduce((acc, s, i) => {
-          if (s.code === block.code) acc.push(i);
-          return acc;
-        }, [] as number[]);
+      const currentPos = solutionBlocks.findIndex(b => b.id === block.id);
 
-        return possiblePositions.includes(currentPos) && block.indentation === solutionBlock.indentation;
+      // check if the block is in any valid position for its code
+      const isValidPosition = possibleSolutions.some(({ position, block: solutionBlock }) => {
+        // a block is correct if:
+        // 1. it's in a valid position for its code
+        // 2. it has the correct indentation
+        return position === currentPos && block.indentation === solutionBlock.indentation;
       });
+
+      return !isValidPosition;
     });
 
-    if (wrongBlocks.length === 0) {
+    if (wrongBlocks.length === 0 && solutionBlocks.length === solution.length) {
       alert('Congratulations! Your solution is correct!');
     } else {
       setIncorrectBlocks(wrongBlocks.map(block => block.id));
@@ -291,28 +284,28 @@ export function PuzzleArea({ initialBlocks, solution }: PuzzleAreaProps) {
       <div className="flex gap-4">
         <button
           onClick={checkSolution}
-          className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 font-medium"
+          className="px-6 py-2 bg-blue-500 text-white font-bold rounded-lg hover:bg-blue-600 cursor-pointer"
         >
           Check Solution
         </button>
         <button
           onClick={handleHint}
           disabled={hintDisabled}
-          className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 disabled:opacity-50 font-medium"
+          className="px-6 py-2 bg-green-500 text-white font-bold rounded-lg hover:bg-green-600 disabled:opacity-50  cursor-pointer"
         >
           {hintDisabled ? 'Hint (10s)' : 'Get Hint'}
         </button>
         <button
           onClick={undo}
           disabled={!canUndo}
-          className="px-6 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 disabled:opacity-50 font-medium"
+          className="px-6 py-2 bg-gray-600 text-white font-bold rounded-lg hover:bg-gray-700 disabled:opacity-50  cursor-pointer"
         >
           Undo (Ctrl+Z)
         </button>
         <button
           onClick={redo}
           disabled={!canRedo}
-          className="px-6 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 disabled:opacity-50 font-medium"
+          className="px-6 py-2 bg-gray-600 text-white font-bold rounded-lg hover:bg-gray-700 disabled:opacity-50  cursor-pointer"
         >
           Redo (Ctrl+Y)
         </button>
