@@ -1,25 +1,10 @@
-// app/page.tsx
 "use client";
 
 import { useState, useRef } from "react";
-import {
-  DndContext,
-  closestCenter,
-  KeyboardSensor,
-  PointerSensor,
-  useSensor,
-  useSensors,
-} from "@dnd-kit/core";
-import {
-  arrayMove,
-  SortableContext,
-  sortableKeyboardCoordinates,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
 import { CodeBlock, PuzzleData } from "@/lib/types";
-import { CodeBlockItem } from "@/components/CodeBlockItem";
 import { APIKeyModal } from "@/components/APIKeyModal";
 import { useAPIKey } from "@/hooks/useAPIKey";
+import { PuzzleArea } from "@/components/PuzzleArea";
 
 export default function Home() {
   const { apiKey, setApiKey, clearApiKey, isKeySet } = useAPIKey();
@@ -30,14 +15,6 @@ export default function Home() {
   const [error, setError] = useState("");
   const requestCache = useRef(new Map<string, PuzzleData>());
   const [showApiKeyModal, setShowApiKeyModal] = useState(false);
-
-
-  const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
-  );
 
   const handleGenerate = async () => {
     if (!prompt) return;
@@ -79,17 +56,6 @@ export default function Home() {
       setLoading(false);
     }
   };
-  const handleDragEnd = (event: any) => {
-    const { active, over } = event;
-
-    if (active.id !== over.id) {
-      setBlocks((items) => {
-        const oldIndex = items.findIndex((item) => item.id === active.id);
-        const newIndex = items.findIndex((item) => item.id === over.id);
-        return arrayMove(items, oldIndex, newIndex);
-      });
-    }
-  };
 
   return (
     <main className="min-h-screen p-8 bg-gray-900 text-white">
@@ -115,28 +81,9 @@ export default function Home() {
         )}
 
         {blocks.length > 0 && (
-          <DndContext
-            sensors={sensors}
-            collisionDetection={closestCenter}
-            onDragEnd={handleDragEnd}
-          >
-            <div className="grid grid-cols-2 gap-6">
-              <div className="space-y-4">
-                <h2 className="text-xl font-bold text-white">Solution Area</h2>
-                <div className="min-h-[400px] p-4 bg-gray-800 rounded-lg border border-gray-700">
-                  <SortableContext
-                    items={blocks}
-                    strategy={verticalListSortingStrategy}
-                  >
-                    {blocks.map((block) => (
-                      <CodeBlockItem key={block.id} block={block} />
-                    ))}
-                  </SortableContext>
-                </div>
-              </div>
-            </div>
-          </DndContext>
+          <PuzzleArea initialBlocks={blocks} solution={solution} />
         )}
+
         <APIKeyModal
           isOpen={showApiKeyModal}
           onClose={() => setShowApiKeyModal(false)}
