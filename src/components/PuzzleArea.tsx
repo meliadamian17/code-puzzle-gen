@@ -195,8 +195,12 @@ export function PuzzleArea({ initialBlocks, solution }: PuzzleAreaProps) {
       return !isValidPosition;
     });
 
-    if (wrongBlocks.length === 0 && solutionBlocks.length === solution.length) {
-      alert('Congratulations! Your solution is correct!');
+    if (wrongBlocks.length === 0) {
+      if (solutionBlocks.length === solution.length) {
+        alert('Congratulations! Your solution is correct!');
+      } else {
+        alert('Your solution is partially correct! Keep going!');
+      }
     } else {
       setIncorrectBlocks(wrongBlocks.map(block => block.id));
     }
@@ -227,12 +231,29 @@ export function PuzzleArea({ initialBlocks, solution }: PuzzleAreaProps) {
     return 'up';
   };
 
-  // lots of duplicate logic from solution validation but abstracting seems pointless atm
   const handleHint = () => {
     if (hintDisabled) return;
 
     setShowHint(null);
     setIncorrectBlocks([]);
+
+    // check if current solution is already correct (either complete or partial)
+    const isSolutionCorrect = solutionBlocks.every(block => {
+      const possibleSolutions = processedSolution.get(block.code) || [];
+      const currentPos = solutionBlocks.findIndex(b => b.id === block.id);
+      return possibleSolutions.some(({ position, block: solutionBlock }) => 
+        position === currentPos && block.indentation === solutionBlock.indentation
+      );
+    });
+
+    if (isSolutionCorrect) {
+      if (solutionBlocks.length === solution.length) {
+        alert("You don't need a hint - your solution is already complete!");
+      } else {
+        alert("You don't need a hint - your solution is partially correct! Keep going!");
+      }
+      return;
+    }
 
     // find incorrect blocks
     const wrongBlocks = solutionBlocks.filter(block => {
