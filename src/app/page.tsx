@@ -58,26 +58,26 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen p-8 bg-gray-900 text-white">
+    <main className="min-h-screen p-8 bg-[#1E1E1E] text-[#D4D4D4]">
       <div className="max-w-4xl mx-auto space-y-6">
         <div className="space-y-4">
           <textarea
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
             placeholder="Describe your programming task..."
-            className="w-full p-4 border rounded-lg h-32 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-800 text-white placeholder-gray-400 border-gray-700"
+            className="w-full p-4 border rounded-lg h-32 focus:outline-none focus:ring-2 focus:ring-[#264F78] bg-[#2A2D2E] text-[#D4D4D4] placeholder-[#6A6A6A] border-[#3A3D41]"
           />
           <button
             onClick={handleGenerate}
             disabled={loading}
-            className="px-4 py-2 bg-blue-500 text-white font-bold rounded-lg hover:bg-blue-600 disabled:opacity-50 cursor-pointer"
+            className="px-4 py-2 bg-[#0E639C] text-white font-bold rounded-lg hover:bg-[#1177BB] disabled:opacity-50 cursor-pointer"
           >
             {loading ? "Generating..." : "Generate Puzzle"}
           </button>
         </div>
 
         {error && (
-          <div className="p-4 bg-red-900 text-red-100 rounded-lg">{error}</div>
+          <div className="p-4 bg-[#2A2D2E] text-[#D4D4D4] border border-[#3A3D41] rounded-lg">{error}</div>
         )}
 
         {blocks.length > 0 && (

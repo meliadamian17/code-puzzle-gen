@@ -71,9 +71,10 @@ export function CodeBlockItem({ block, showHint, hintDirection, indentation = 0,
 
       const model = editor.getModel();
       const lines = model?.getLinesContent() || [];
-      const longestLine = Math.max(...lines.map((line: string) => line.length));
-      const baseWidth = Math.max(longestLine * 8 + 20, 100); // content width and some padding
-      const totalWidth = baseWidth + (indentation * 16); // 16px move per indent level (seemed close enough to 2-space indentation)
+      
+      const parentWidth = editorRef.current.parentElement?.clientWidth || 0;
+      const totalWidth = parentWidth;
+      
       editorRef.current.style.width = `${totalWidth}px`;
 
       if (indentation > 0) {
@@ -121,17 +122,17 @@ export function CodeBlockItem({ block, showHint, hintDirection, indentation = 0,
       style={style}
       {...attributes}
       {...listeners}
-      className={`relative group cursor-move rounded-lg shadow-sm my-1 w-full ${showHint
-        ? 'bg-red-900/20 border-2 border-red-500'
+      className={`relative group cursor-move rounded shadow-sm my-2 w-full ${showHint
+        ? 'bg-[#2A2D2E] border border-red-500'
         : isIncorrect
-          ? 'bg-gray-700 border-2 border-red-500'
-          : 'bg-gray-700 border border-gray-600'
-        } p-1.5 touch-none`}
+          ? 'bg-[#1E1E1E] border border-red-500'
+          : 'bg-[#1E1E1E] border border-[#3A3D41]'
+        } p-0.5 touch-none hover:bg-[#2A2D2E]`}
     >
       <div className="flex items-start justify-between w-full">
         <div
           ref={editorRef}
-          className="h-[26px] w-full"
+          className="h-[26px] w-full rounded overflow-hidden"
         />
         <button
           className="ml-2 w-5 h-5 rounded-full bg-gray-500 text-white flex items-center justify-center hover:bg-gray-400 absolute -right-2.5 -top-2.5 z-10 text-sm flex-shrink-0"

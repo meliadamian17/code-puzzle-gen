@@ -284,28 +284,28 @@ export function PuzzleArea({ initialBlocks, solution }: PuzzleAreaProps) {
       <div className="flex gap-4">
         <button
           onClick={checkSolution}
-          className="px-6 py-2 bg-blue-500 text-white font-bold rounded-lg hover:bg-blue-600 cursor-pointer"
+          className="px-6 py-2 bg-[#0E639C] text-white font-bold rounded-lg hover:bg-[#1177BB] cursor-pointer"
         >
           Check Solution
         </button>
         <button
           onClick={handleHint}
           disabled={hintDisabled}
-          className="px-6 py-2 bg-green-500 text-white font-bold rounded-lg hover:bg-green-600 disabled:opacity-50  cursor-pointer"
+          className="px-6 py-2 bg-[#388A34] text-white font-bold rounded-lg hover:bg-[#3F9E3A] disabled:opacity-50 cursor-pointer"
         >
           {hintDisabled ? 'Hint (10s)' : 'Get Hint'}
         </button>
         <button
           onClick={undo}
           disabled={!canUndo}
-          className="px-6 py-2 bg-gray-600 text-white font-bold rounded-lg hover:bg-gray-700 disabled:opacity-50  cursor-pointer"
+          className="px-6 py-2 bg-[#2A2D2E] text-[#D4D4D4] font-bold rounded-lg hover:bg-[#3A3D41] disabled:opacity-50 cursor-pointer"
         >
           Undo (Ctrl+Z)
         </button>
         <button
           onClick={redo}
           disabled={!canRedo}
-          className="px-6 py-2 bg-gray-600 text-white font-bold rounded-lg hover:bg-gray-700 disabled:opacity-50  cursor-pointer"
+          className="px-6 py-2 bg-[#2A2D2E] text-[#D4D4D4] font-bold rounded-lg hover:bg-[#3A3D41] disabled:opacity-50 cursor-pointer"
         >
           Redo (Ctrl+Y)
         </button>
@@ -321,7 +321,7 @@ export function PuzzleArea({ initialBlocks, solution }: PuzzleAreaProps) {
         <div className="grid grid-cols-2 gap-8">
           <Droppable
             id="initial-area"
-            className="min-h-[700px] w-full p-6 bg-gray-800 rounded-lg border border-gray-700"
+            className="min-h-[700px] w-full p-6 bg-[#1E1E1E] rounded-lg border border-[#3A3D41]"
           >
             <SortableContext
               items={blocks}
@@ -344,7 +344,7 @@ export function PuzzleArea({ initialBlocks, solution }: PuzzleAreaProps) {
 
           <Droppable
             id="solution-area"
-            className="min-h-[700px] w-full p-6 bg-gray-800 rounded-lg border border-gray-700"
+            className="min-h-[700px] w-full p-6 bg-[#1E1E1E] rounded-lg border border-[#3A3D41]"
           >
             <SortableContext
               items={solutionBlocks}
